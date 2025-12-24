@@ -1,56 +1,57 @@
+
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../data/dummy_data.dart';
+import '../models/news_article.dart'; // Import the NewsArticle model
 
 class ApiService {
   // --- Keys & Config ---
   static const String _fdApiKey = 'eee805659bf74cab8f5b71da83ffbe4c';
   static const String _rapidApiKey = '6100d0f820a81af17c75fc65199f25e4';
-  static const String _newsApiKey =
-      '7c225cfdeda24ea2850c01cfd72eae8d'; // NewsAPI
+  static const String _newsApiKey = '7c225cfdeda24ea2850c01cfd72eae8d'; 
 
-  static const String _fdTeamId = '66'; // Man Utd (football-data.org)
-  static const String _rapidTeamId = '33'; // Man Utd (API-Football)
-  static const String _rapidSeason =
-      '2023'; // API-Football Season (Free plan: 2021-2023 only)
+  static const String _fdTeamId = '66'; 
+  static const String _rapidTeamId = '33'; 
+  static const String _rapidSeason = '2023'; 
 
-  // Map simple league codes used in UI to API-Football (rapid) numeric ids
   static const Map<String, String> _leagueToRapidId = {
-    'PL': '39', // Premier League
-    'CL': '2', // Champions League (approx id on some providers)
-    'FA': '43', // FA Cup (approx)
+    'PL': '39', 
+    'CL': '2', 
+    'FA': '43', 
   };
 
-  // Simple in-memory cache for standings: key -> {timestamp: DateTime, data: List}
   final Map<String, Map<String, dynamic>> _standingsCache = {};
 
   // --- Unified Methods ---
+  
+  // ... (other methods remain unchanged)
 
   Future<List<Map<String, dynamic>>> getUnifiedFixtures() async {
     try {
       final rapidData = await _fetchRapidFixtures();
       if (rapidData.isNotEmpty) return rapidData;
     } catch (e) {
-      print('RapidAPI Fixtures Failed: $e');
+      if (kDebugMode) {
+        print('RapidAPI Fixtures Failed: $e');
+      }
     }
 
     try {
       final fdData = await _fetchFdFixtures();
       if (fdData.isNotEmpty) return fdData;
     } catch (e) {
-      print('FD Fixtures Failed: $e');
+      if (kDebugMode) {
+        print('FD Fixtures Failed: $e');
+      }
     }
 
     return DummyData.fixtures;
   }
 
   Future<List<Map<String, dynamic>>> getUnifiedSquad() async {
-    // Create a map of API photos for quick lookup
     Map<String, String> apiPhotos = {};
-
     try {
-      // Fetch photos from API
       final response = await http.get(
         Uri.parse(
           'https://v3.football.api-sports.io/players/squads?team=$_rapidTeamId',
@@ -65,13 +66,10 @@ class ApiService {
         final data = json.decode(response.body);
         if (data['response'] != null && (data['response'] as List).isNotEmpty) {
           final List<dynamic> apiPlayers = data['response'][0]['players'];
-
-          // Build photo map with multiple keys for better matching
           for (var p in apiPlayers) {
             final name = p['name'].toString();
             final photo = p['photo']?.toString() ?? '';
             if (photo.isNotEmpty) {
-              // Normalize: lowercase + remove accents
               final normalized = name
                   .toLowerCase()
                   .replaceAll('á', 'a')
@@ -84,88 +82,55 @@ class ApiService {
                   .replaceAll('ç', 'c')
                   .replaceAll('š', 's')
                   .replaceAll('ž', 'z');
-
-              // Store with normalized full name
               apiPhotos[normalized] = photo;
-
-              // Also store with surname
               final parts = normalized.split(' ');
-              if (parts.length > 1) {
-                apiPhotos[parts.last] = photo;
-                // Special: "Amad Diallo" → also store as "amad"
-                if (parts.first == 'amad') apiPhotos['amad'] = photo;
-              }
-
-              // Store with first name
+              if (parts.length > 1) apiPhotos[parts.last] = photo;
               if (parts.isNotEmpty) apiPhotos[parts.first] = photo;
             }
           }
-
-          print('✅ Fetched ${apiPhotos.length} photos from API');
         }
       }
     } catch (e) {
-      print('API Photo fetch failed: $e');
+      if (kDebugMode) {
+        print('API Photo fetch failed: $e');
+      }
     }
 
-    // Use DummyData as base, enrich with API photos
-    final enrichedSquad =
-        DummyData.squad.map((player) {
-          final playerCopy = Map<String, dynamic>.from(player);
-
-          // Whitelist: Players that should KEEP their DummyData photos
-          final photoWhitelist = ['ruben amorim', 'amad', 'chido obi'];
-          final playerName = player['name'].toString().toLowerCase();
-
-          // Skip API photo for whitelisted players
-          if (photoWhitelist.contains(playerName)) {
-            return playerCopy; // Keep DummyData photo
+    final enrichedSquad = DummyData.squad.map((player) {
+      final playerCopy = Map<String, dynamic>.from(player);
+      final playerName = player['name'].toString().toLowerCase();
+      final photoWhitelist = ['ruben amorim', 'amad', 'chido obi'];
+      if (photoWhitelist.contains(playerName)) return playerCopy;
+      if (player['name'] != null) {
+        final dummyName = player['name']!
+            .toLowerCase()
+            .replaceAll('á', 'a')
+            .replaceAll('é', 'e')
+            .replaceAll('í', 'i')
+            .replaceAll('ó', 'o')
+            .replaceAll('ú', 'u')
+            .replaceAll('ı', 'i')
+            .replaceAll('ñ', 'n')
+            .replaceAll('ç', 'c')
+            .replaceAll('š', 's')
+            .replaceAll('ž', 'z');
+        String? matchedPhoto;
+        if (apiPhotos.containsKey(dummyName)) {
+          matchedPhoto = apiPhotos[dummyName];
+        } else {
+          final parts = dummyName.split(' ');
+          if (parts.length > 1 && apiPhotos.containsKey(parts.last)) {
+            matchedPhoto = apiPhotos[parts.last];
+          } else if (parts.isNotEmpty && apiPhotos.containsKey(parts.first)) {
+            matchedPhoto = apiPhotos[parts.first];
           }
-
-          // Try to find matching photo from API
-          if (player['name'] != null) {
-            // Normalize DummyData name (same as API)
-            final dummyName = player['name']
-                .toString()
-                .toLowerCase()
-                .replaceAll('á', 'a')
-                .replaceAll('é', 'e')
-                .replaceAll('í', 'i')
-                .replaceAll('ó', 'o')
-                .replaceAll('ú', 'u')
-                .replaceAll('ı', 'i')
-                .replaceAll('ñ', 'n')
-                .replaceAll('ç', 'c')
-                .replaceAll('š', 's')
-                .replaceAll('ž', 'z');
-            String? matchedPhoto;
-
-            // Try exact full name match first (most accurate)
-            if (apiPhotos.containsKey(dummyName)) {
-              matchedPhoto = apiPhotos[dummyName];
-            } else {
-              // Try surname match
-              final parts = dummyName.split(' ');
-              if (parts.length > 1 && apiPhotos.containsKey(parts.last)) {
-                matchedPhoto = apiPhotos[parts.last];
-              } else if (parts.isNotEmpty &&
-                  apiPhotos.containsKey(parts.first)) {
-                // Try first name match (for "Amad", "Casemiro", etc)
-                matchedPhoto = apiPhotos[parts.first];
-              }
-            }
-
-            // Only update if we found a match, otherwise keep DummyData photo
-            if (matchedPhoto != null && matchedPhoto.isNotEmpty) {
-              playerCopy['image'] = matchedPhoto;
-            }
-            // If no match, keep original DummyData photo (Coach, Diego Leon, Sesko, etc)
-          }
-
-          return playerCopy;
-        }).toList();
-
-    print('✅ Enriched ${enrichedSquad.length} players with API photos');
+        }
+        if (matchedPhoto != null && matchedPhoto.isNotEmpty) {
+          playerCopy['image'] = matchedPhoto;
+        }
+      }
+      return playerCopy;
+    }).toList();
     return enrichedSquad;
   }
 
@@ -174,11 +139,8 @@ class ApiService {
     String? season,
     bool forceRefresh = false,
   }) async {
-    // Use provided season or default rapid season
     final useSeason = season ?? _rapidSeason;
-
     final cacheKey = '$league|$useSeason';
-    // Return cached version if fresh (5 minutes) and not forcing refresh
     if (!forceRefresh && _standingsCache.containsKey(cacheKey)) {
       final entry = _standingsCache[cacheKey]!;
       final DateTime ts = entry['timestamp'] as DateTime;
@@ -186,144 +148,126 @@ class ApiService {
         return List<Map<String, dynamic>>.from(entry['data'] as List);
       }
     }
-
-    // First try API-Football via RapidAPI (most rich)
     try {
-      final leagueId =
-          _leagueToRapidId[league] ?? league; // allow numeric id too
+      final leagueId = _leagueToRapidId[league] ?? league;
       final uri = Uri.parse(
         'https://v3.football.api-sports.io/standings?league=$leagueId&season=$useSeason',
       );
-
-      final response = await http.get(
-        uri,
-        headers: {
-          'x-rapidapi-key': _rapidApiKey,
-          'x-rapidapi-host': 'v3.football.api-sports.io',
-        },
-      );
-
+      final response = await http.get(uri, headers: {
+        'x-rapidapi-key': _rapidApiKey,
+        'x-rapidapi-host': 'v3.football.api-sports.io',
+      });
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['response'] != null && data['response'].isNotEmpty) {
           final standings = data['response'][0]['league']['standings'][0];
           return List<Map<String, dynamic>>.from(
-            standings.map(
-              (s) => {
-                'strTeam': s['team']['name'],
-                'strBadge': s['team']['logo'],
-                'intRank': s['rank'].toString(),
-                'intPlayed': s['all']['played'].toString(),
-                'intWin': s['all']['win'].toString(),
-                'intDraw': s['all']['draw'].toString(),
-                'intLoss': s['all']['lose'].toString(),
-                'intGoalDifference': s['goalsDiff'].toString(),
-                'intPoints': s['points'].toString(),
-                'strForm': s['form'],
-                'intGoalsFor': s['all']['goals']['for'].toString(),
-                'intGoalsAgainst': s['all']['goals']['against'].toString(),
-              },
-            ),
+            standings.map((s) => {
+                  'strTeam': s['team']['name'],
+                  'strBadge': s['team']['logo'],
+                  'intRank': s['rank'].toString(),
+                  'intPlayed': s['all']['played'].toString(),
+                  'intWin': s['all']['win'].toString(),
+                  'intDraw': s['all']['draw'].toString(),
+                  'intLoss': s['all']['lose'].toString(),
+                  'intGoalDifference': s['goalsDiff'].toString(),
+                  'intPoints': s['points'].toString(),
+                  'strForm': s['form'],
+                  'intGoalsFor': s['all']['goals']['for'].toString(),
+                  'intGoalsAgainst': s['all']['goals']['against'].toString(),
+                }),
           );
         }
-      } else {
-        print('RapidAPI Standings HTTP ${response.statusCode}');
       }
     } catch (e) {
-      print('RapidAPI Standings Failed: $e');
+      if (kDebugMode) {
+        print('RapidAPI Standings Failed: $e');
+      }
     }
-
-    // Next try football-data.org (uses competition codes like 'PL')
     try {
-      String url =
-          'https://api.football-data.org/v4/competitions/$league/standings';
+      String url = 'https://api.football-data.org/v4/competitions/$league/standings';
       if (kIsWeb) url = 'https://corsproxy.io/?' + Uri.encodeComponent(url);
-
+      final response = await http.get(Uri.parse(url), headers: {'X-Auth-Token': _fdApiKey});
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final standings = data['standings'][0]['table'];
+        return List<Map<String, dynamic>>.from(
+          standings.map((s) => {
+                'strTeam': s['team']['name'],
+                'strBadge': s['team']['crest'],
+                'intRank': s['position'].toString(),
+                'intPlayed': s['playedGames'].toString(),
+                'intWin': s['won'].toString(),
+                'intDraw': s['draw'].toString(),
+                'intLoss': s['lost'].toString(),
+                'intGoalDifference': s['goalDifference'].toString(),
+                'intPoints': s['points'].toString(),
+                'strForm': s['form'] ?? '',
+                'intGoalsFor': s['goalsFor'].toString(),
+                'intGoalsAgainst': s['goalsAgainst'].toString(),
+              }),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('FD Standings Failed: $e');
+      }
+    }
+    final fallback = _getDummyStandings();
+    _standingsCache[cacheKey] = {'timestamp': DateTime.now(), 'data': fallback};
+    return fallback;
+  }
+  
+  // --- News API ---
+  // MODIFIED: Returns a Future<List<NewsArticle>>
+  Future<List<NewsArticle>> fetchNews() async {
+    try {
       final response = await http.get(
-        Uri.parse(url),
-        headers: {'X-Auth-Token': _fdApiKey},
+        Uri.parse(
+          'https://newsapi.org/v2/everything?q=manchester+united&language=en&sortBy=publishedAt&pageSize=50',
+        ),
+        headers: {'X-Api-Key': _newsApiKey},
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        final standings = data['standings'][0]['table'];
+        final articles = data['articles'] as List;
 
-        return List<Map<String, dynamic>>.from(
-          standings.map((s) {
-            return {
-              'strTeam': s['team']['name'],
-              'strBadge': s['team']['crest'],
-              'intRank': s['position'].toString(),
-              'intPlayed': s['playedGames'].toString(),
-              'intWin': s['won'].toString(),
-              'intDraw': s['draw'].toString(),
-              'intLoss': s['lost'].toString(),
-              'intGoalDifference': s['goalDifference'].toString(),
-              'intPoints': s['points'].toString(),
-              'strForm': s['form'] ?? '',
-              'intGoalsFor': s['goalsFor'].toString(),
-              'intGoalsAgainst': s['goalsAgainst'].toString(),
-            };
-          }),
-        );
-      } else {
-        print('FD Standings HTTP ${response.statusCode}');
-      }
-    } catch (e) {
-      print('FD Standings Failed: $e');
-    }
-
-    // Fallback to DummyData
-    final fallback = _getDummyStandings();
-    // store in cache
-    _standingsCache[cacheKey] = {'timestamp': DateTime.now(), 'data': fallback};
-    return fallback;
-  }
-
-  Future<List<Map<String, dynamic>>> _fetchFdStandings() async {
-    String url = 'https://api.football-data.org/v4/competitions/PL/standings';
-
-    if (kIsWeb) {
-      url = 'https://corsproxy.io/?' + Uri.encodeComponent(url);
-    }
-
-    final response = await http.get(
-      Uri.parse(url),
-      headers: {'X-Auth-Token': _fdApiKey},
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final standings = data['standings'][0]['table'];
-
-      return List<Map<String, dynamic>>.from(
-        standings.map((s) {
-          String mockForm = '';
-          if (s['team']['shortName'] == 'Man United' ||
-              s['team']['name'] == 'Manchester United FC') {
-            mockForm = 'WLDWW';
+        final filteredArticles = articles.where((article) {
+          final imageUrl = article['urlToImage']?.toString() ?? '';
+          final hasValidImage = imageUrl.isNotEmpty && !imageUrl.contains('null') && (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'));
+          final title = article['title']?.toString() ?? '';
+          
+          if (!hasValidImage || title.isEmpty || title.toLowerCase() == '[removed]') {
+            return false;
           }
 
-          return {
-            'strTeam': s['team']['name'],
-            'strBadge': s['team']['crest'],
-            'intRank': s['position'].toString(),
-            'intPlayed': s['playedGames'].toString(),
-            'intWin': s['won'].toString(),
-            'intDraw': s['draw'].toString(),
-            'intLoss': s['lost'].toString(),
-            'intGoalDifference': s['goalDifference'].toString(),
-            'intPoints': s['points'].toString(),
-            'strForm': s['form'] ?? mockForm,
-            'intGoalsFor': s['goalsFor'].toString(),
-            'intGoalsAgainst': s['goalsAgainst'].toString(),
-          };
-        }),
-      );
-    }
-    return [];
-  }
+          final description = article['description']?.toString().toLowerCase() ?? '';
+          final isManchesterUnited = title.toLowerCase().contains('manchester united') ||
+              title.toLowerCase().contains('man utd') ||
+              (title.toLowerCase().contains('manchester') && title.toLowerCase().contains('utd')) ||
+              description.contains('manchester united');
 
+          return isManchesterUnited;
+        }).toList();
+
+        // MODIFIED: Map directly to NewsArticle objects using the fromJson factory
+        return filteredArticles
+            .map((articleJson) => NewsArticle.fromJson(articleJson))
+            .toList();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('NewsAPI Failed: $e');
+      }
+    }
+
+    // MODIFIED: Fallback to DummyData.news, which is already List<NewsArticle>
+    return DummyData.news;
+  }
+  
+  // ... (rest of the file remains largely the same, private methods are kept)
+  
   Future<List<Map<String, dynamic>>> _fetchRapidFixtures() async {
     final response = await http.get(
       Uri.parse(
@@ -355,7 +299,9 @@ class ApiService {
           fixtures.addAll(List.from(lastData['response'] ?? []));
         }
       } catch (e) {
-        print('Error fetching last results RapidAPI: $e');
+        if (kDebugMode) {
+          print('Error fetching last results RapidAPI: $e');
+        }
       }
 
       fixtures.sort(
@@ -471,132 +417,6 @@ class ApiService {
   }
 
   List<Map<String, dynamic>> _getDummyStandings() {
-    return [
-      {
-        'strTeam': 'Arsenal',
-        'strBadge': 'https://media.api-sports.io/football/teams/42.png',
-        'intRank': '1',
-        'intPlayed': '15',
-        'intWin': '10',
-        'intDraw': '3',
-        'intLoss': '2',
-        'intGoalDifference': '+19',
-        'intPoints': '33',
-        'strForm': 'WWDWL',
-        'intGoalsFor': '29',
-        'intGoalsAgainst': '10',
-      },
-      {
-        'strTeam': 'Manchester City',
-        'strBadge': 'https://media.api-sports.io/football/teams/50.png',
-        'intRank': '2',
-        'intPlayed': '15',
-        'intWin': '10',
-        'intDraw': '1',
-        'intLoss': '4',
-        'intGoalDifference': '+19',
-        'intPoints': '31',
-        'strForm': 'LWWWW',
-        'intGoalsFor': '35',
-        'intGoalsAgainst': '16',
-      },
-      {
-        'strTeam': 'Aston Villa',
-        'strBadge': 'https://media.api-sports.io/football/teams/66.png',
-        'intRank': '3',
-        'intPlayed': '15',
-        'intWin': '9',
-        'intDraw': '3',
-        'intLoss': '3',
-        'intGoalDifference': '+7',
-        'intPoints': '30',
-        'strForm': 'WWWWW',
-        'intGoalsFor': '25',
-        'intGoalsAgainst': '18',
-      },
-      // ... rest omitted for brevity in this prototype file
-    ];
-  }
-
-  // --- News API ---
-  Future<List<Map<String, dynamic>>> fetchNews() async {
-    try {
-      final response = await http.get(
-        Uri.parse(
-          'https://newsapi.org/v2/everything?q=manchester+united&language=en&sortBy=publishedAt&pageSize=50',
-        ),
-        headers: {'X-Api-Key': _newsApiKey},
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final articles = data['articles'] as List;
-
-        // Filter: only articles with valid images and specifically Manchester United
-        final filteredArticles =
-            articles.where((article) {
-              // Check for valid image URL
-              final imageUrl = article['urlToImage']?.toString() ?? '';
-              final hasValidImage =
-                  imageUrl.isNotEmpty &&
-                  !imageUrl.contains('null') &&
-                  (imageUrl.startsWith('http://') ||
-                      imageUrl.startsWith('https://'));
-
-              if (!hasValidImage) return false;
-
-              // Get title and description (case insensitive)
-              final title = article['title']?.toString().toLowerCase() ?? '';
-              final description =
-                  article['description']?.toString().toLowerCase() ?? '';
-
-              // Must specifically mention Manchester United (not just any "United")
-              final isManchesterUnited =
-                  title.contains('manchester united') ||
-                  title.contains('man utd') ||
-                  (title.contains('manchester') && title.contains('utd')) ||
-                  description.contains('manchester united');
-
-              return isManchesterUnited;
-            }).toList();
-
-        return filteredArticles.map((article) {
-          return {
-            'title': article['title'] ?? 'No Title',
-            'description': article['description'] ?? '',
-            'image': article['urlToImage'] ?? '',
-            'date': _formatNewsDate(article['publishedAt']),
-            'source': article['source']['name'] ?? 'Unknown',
-            'url': article['url'] ?? '',
-          };
-        }).toList();
-      }
-    } catch (e) {
-      print('NewsAPI Failed: $e');
-    }
-
-    // Fallback to DummyData
-    return DummyData.news;
-  }
-
-  String _formatNewsDate(String? dateStr) {
-    if (dateStr == null) return '';
-    try {
-      final date = DateTime.parse(dateStr);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-
-      if (diff.inHours < 1) {
-        return '${diff.inMinutes}m ago';
-      } else if (diff.inHours < 24) {
-        return '${diff.inHours}h ago';
-      } else if (diff.inDays < 7) {
-        return '${diff.inDays}d ago';
-      } else {
-        return '${date.day}/${date.month}/${date.year}';
-      }
-    } catch (e) {
-      return dateStr;
-    }
+    return DummyData.standingsPL; // Use the more complete dummy data
   }
 }

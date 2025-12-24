@@ -1,112 +1,98 @@
+
 import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
-import 'product_detail.dart';
-import 'cart_screen.dart';
-import '../models/cart.dart';
+import './product_detail_screen.dart';
 
-class ShopScreen extends StatefulWidget {
+class ShopScreen extends StatelessWidget {
   const ShopScreen({super.key});
 
-            child: Card(
-  State<ShopScreen> createState() => _ShopScreenState();
-}
-
-class _ShopScreenState extends State<ShopScreen> {
   @override
   Widget build(BuildContext context) {
-    final products = DummyData.products;
+    final shopItems = DummyData.shopItems;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Shop')),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-          await Navigator.of(
-            context,
-          ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
-                        Text(p['name'], style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: 8),
-                        Text('\$${p['price']}', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+    // FIX: Removed Scaffold and AppBar. The Padding is now the root widget.
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.75,
         ),
-        itemCount: products.length,
-        itemBuilder: (context, i) {
-          final p = products[i];
-          return GestureDetector(
-            onTap: () async {
-              await Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => ProductDetail(product: p)),
-              );
-              setState(() {});
-            },
-            child: Card(
+        itemCount: shopItems.length,
+        itemBuilder: (context, index) {
+          final item = shopItems[index];
+          return _buildShopItemCard(context, item);
+        },
+      ),
+    );
+  }
+
+  Widget _buildShopItemCard(BuildContext context, Map<String, dynamic> item) {
+    final imageUrl = item['image'] as String? ?? '';
+    final name = item['name'] as String? ?? 'No Name';
+    final price = item['price'] as double? ?? 0.0;
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      elevation: 3,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(product: item),
+            ),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Container(
+                color: Colors.white,
+                child: imageUrl.isNotEmpty
+                    ? Image.network(
+                        imageUrl,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.shopping_bag_outlined, color: Colors.grey, size: 50),
+                          );
+                        },
+                      )
+                    : const Center(
+                        child: Icon(Icons.shopping_bag_outlined, color: Colors.grey, size: 50),
+                      ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Image.network(
-                      p['image'],
-                      fit: BoxFit.cover,
-                      errorBuilder: (c, e, s) => const Icon(Icons.image),
-                    ),
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          p['name'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                  const SizedBox(height: 4),
+                  Text(
+                    '£${price.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          '\$${p['price']}',
-                          style: const TextStyle(color: Colors.green),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                Cart.instance.addItem(
-                                  CartItem(
-                                    id: p['id'],
-                                    name: p['name'],
-                                    price: (p['price'] as num).toDouble(),
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Added ${p['name']} to cart'),
-                                  ),
-                                );
-                                setState(() {});
-                              },
-                              child: const Text('Add'),
-                            ),
-                            const SizedBox(width: 8),
-                            OutlinedButton(
-                              onPressed: () async {
-                                await Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => ProductDetail(product: p),
-                                  ),
-                                );
-                                setState(() {});
-                              },
-                              child: const Text('Details'),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }

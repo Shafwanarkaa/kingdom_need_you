@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
-import 'screens/shop_screen.dart';
-import 'screens/standings_screen.dart';
-import 'models/cart.dart';
+import 'package:provider/provider.dart'; // Import provider
+import 'screens/home_screen.dart';
+import 'services/cart_service.dart'; // Import the new CartService
 
 void main() {
   runApp(const MyApp());
@@ -10,93 +11,41 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final primary = Colors.red.shade800;
-    final secondary = Colors.white;
-
-    return MaterialApp(
-      title: 'Manchester United Fan App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: primary),
-        useMaterial3: true,
-        scaffoldBackgroundColor: Colors.grey[50],
-        appBarTheme: AppBarTheme(
-          backgroundColor: primary,
-          foregroundColor: secondary,
-          elevation: 2,
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          selectedItemColor: primary,
-          unselectedItemColor: Colors.grey[600],
-        ),
-        cardTheme: CardTheme(
-          elevation: 2,
-          margin: const EdgeInsets.all(8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+    // Wrap the entire app with a ChangeNotifierProvider.
+    // This makes the CartService available to all widgets in the app.
+    return ChangeNotifierProvider(
+      create: (context) => CartService(),
+      child: MaterialApp(
+        title: 'Kingdom Need You',
+        theme: ThemeData(
+          // Define the primary color scheme for the app.
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.red,
+            primary: Colors.red.shade900, // A deeper red for primary elements
+            secondary: Colors.amber.shade700, // A golden accent color
+            background: Colors.grey.shade100, // A light grey background
           ),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: primary,
-            foregroundColor: secondary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+          // Define the app bar theme.
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.red.shade900,
+            foregroundColor: Colors.white, // White text and icons on the app bar
+            elevation: 4,
+            centerTitle: true,
           ),
-        ),
-        textTheme: const TextTheme(
-          titleMedium: TextStyle(fontWeight: FontWeight.w600),
-        ),
-      ),
-      home: const MainTabs(),
-    );
-  }
-}
-
-class MainTabs extends StatefulWidget {
-  const MainTabs({super.key});
-
-  @override
-  State<MainTabs> createState() => _MainTabsState();
-}
-
-class _MainTabsState extends State<MainTabs> {
-  int _index = 0;
-
-  static final List<Widget> _pages = <Widget>[
-    const Center(child: Text('Home (prototype)')),
-    const StandingsScreen(),
-    const ShopScreen(),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    // Load persisted cart (non-blocking)
-    Cart.instance.load().then((_) {
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Manchester United')),
-      body: _pages[_index],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _index,
-        onTap: (i) => setState(() => _index = i),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.format_list_numbered),
-            label: 'Standings',
+          // Define the bottom navigation bar theme.
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: Colors.white,
+            selectedItemColor: Colors.red.shade900, // Color for the selected icon
+            unselectedItemColor: Colors.grey.shade600, // Color for unselected icons
+            showUnselectedLabels: true,
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.store), label: 'Shop'),
-        ],
+          // Use Material 3 design.
+          useMaterial3: true,
+        ),
+        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
