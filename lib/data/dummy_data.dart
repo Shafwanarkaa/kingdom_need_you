@@ -1,4 +1,3 @@
-
 import '../models/news_article.dart';
 
 class DummyData {
@@ -7,7 +6,8 @@ class DummyData {
     NewsArticle(
       title: 'Man Utd Legends Return for Charity Match',
       author: 'John Doe',
-      url: 'https://www.manutd.com/en/news/detail/man-utd-legends-return-for-charity-match',
+      url:
+          'https://www.manutd.com/en/news/detail/man-utd-legends-return-for-charity-match',
       urlToImage:
           'https://img.chelseafc.com/image/upload/f_auto,h_720,q_auto/embed/editorial/match-reports/2023-24/newcastle-v-chelsea-pl/Mount_celebrates_v_Newcastle_2324.jpg',
       publishedAt: DateTime.parse('2024-05-18T12:00:00Z'),
@@ -17,7 +17,8 @@ class DummyData {
     NewsArticle(
       title: 'Transfer Talk: United Eyeing New Midfielder',
       author: 'Jane Smith',
-      url: 'https://www.manutd.com/en/news/detail/transfer-talk-united-eyeing-new-midfielder',
+      url:
+          'https://www.manutd.com/en/news/detail/transfer-talk-united-eyeing-new-midfielder',
       urlToImage:
           'https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blt4644a563f665cd4b/6280b33842c5a71025537613/GettyImages-1240417978.jpg',
       publishedAt: DateTime.parse('2024-05-17T09:30:00Z'),
@@ -27,7 +28,8 @@ class DummyData {
     NewsArticle(
       title: 'Academy Stars Shine in FA Youth Cup Final',
       author: 'Emily White',
-      url: 'https://www.manutd.com/en/news/detail/academy-stars-shine-in-fa-youth-cup-final',
+      url:
+          'https://www.manutd.com/en/news/detail/academy-stars-shine-in-fa-youth-cup-final',
       urlToImage:
           'https://icdn.football-espana.net/wp-content/uploads/2024/05/Xavi-Simons-Barcelona.jpg',
       publishedAt: DateTime.parse('2024-05-16T20:00:00Z'),
@@ -39,85 +41,200 @@ class DummyData {
   // --- SQUAD (Updated with photos) ---
   static final List<Map<String, dynamic>> squad = [
     // Goalkeepers
-    {'name': 'Altay Bayindir', 'position': 'Goalkeeper', 'number': '1', 'image': 'https://tmssl.akamaized.net/images/portrait/header/335619-1693832933.jpg'},
-    {'name': 'Tom Heaton', 'position': 'Goalkeeper', 'number': '22', 'image': 'https://tmssl.akamaized.net/images/portrait/header/41250-1685021422.jpg'},
-    {'name': 'Steven Lammens', 'position': 'Goalkeeper', 'number': '31', 'image': 'https://tmssl.akamaized.net/images/portrait/header/541203-1685023933.jpg'},
+    {
+      'name': 'Altay Bayindir',
+      'position': 'Goalkeeper',
+      'number': '1',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/335619-1693832933.jpg',
+    },
+    {
+      'name': 'Tom Heaton',
+      'position': 'Goalkeeper',
+      'number': '22',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/41250-1685021422.jpg',
+    },
+    {
+      'name': 'Steven Lammens',
+      'position': 'Goalkeeper',
+      'number': '31',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/541203-1685023933.jpg',
+    },
 
     // Defenders
-    {'name': 'Matthijs de Ligt', 'position': 'Defender', 'number': '4', 'image': 'https://tmssl.akamaized.net/images/portrait/header/326031-1685022288.jpg'},
-    {'name': 'Harry Maguire', 'position': 'Defender', 'number': '5', 'image': 'https://tmssl.akamaized.net/images/portrait/header/17761-1685021503.jpg'},
-    {'name': 'Lisandro Martínez', 'position': 'Defender', 'number': '6', 'image': 'https://tmssl.akamaized.net/images/portrait/header/487615-1685021960.jpg'},
-    {'name': 'Leny Yoro', 'position': 'Defender', 'number': '15', 'image': 'https://tmssl.akamaized.net/images/portrait/header/1012379-1699971037.jpg'},
-    {'name': 'Luke Shaw', 'position': 'Defender', 'number': '23', 'image': 'https://tmssl.akamaized.net/images/portrait/header/183288-1685021647.jpg'},
-    {'name': 'Ayden Heaven', 'position': 'Defender', 'number': '26', 'image': 'https://ballerupdates.com/wp-content/uploads/2024/02/Ayden-Heaven.jpg'},
-    {'name': 'Tyler Fredricson', 'position': 'Defender', 'number': '33', 'image': 'https://thepeoplesperson.com/wp-content/uploads/2024/02/tyler-fredricson-man-utd-academy-1024x683.jpg'},
-    {'name': 'Tyrell Malacia', 'position': 'Defender', 'number': '12', 'image': 'https://tmssl.akamaized.net/images/portrait/header/267615-1685021873.jpg'},
-    {'name': 'Diego Leon', 'position': 'Defender', 'number': '35', 'image': 'https://www.fifacm.com/content/media/players/24/281639.png'},
-    {'name': 'Noussair Mazraoui', 'position': 'Defender', 'number': '3', 'image': 'https://tmssl.akamaized.net/images/portrait/header/257373-1685022212.jpg'},
-    {'name': 'Diogo Dalot', 'position': 'Defender', 'number': '2', 'image': 'https://tmssl.akamaized.net/images/portrait/header/357155-1685021743.jpg'},
-    {'name': 'Patrick Dorgu', 'position': 'Defender', 'number': '13', 'image': 'https://tmssl.akamaized.net/images/portrait/header/921536-1688632616.jpg'},
+    {
+      'name': 'Matthijs de Ligt',
+      'position': 'Defender',
+      'number': '4',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/326031-1685022288.jpg',
+    },
+    {
+      'name': 'Harry Maguire',
+      'position': 'Defender',
+      'number': '5',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/17761-1685021503.jpg',
+    },
+    {
+      'name': 'Lisandro Martínez',
+      'position': 'Defender',
+      'number': '6',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/487615-1685021960.jpg',
+    },
+    {
+      'name': 'Leny Yoro',
+      'position': 'Defender',
+      'number': '15',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/1012379-1699971037.jpg',
+    },
+    {
+      'name': 'Luke Shaw',
+      'position': 'Defender',
+      'number': '23',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/183288-1685021647.jpg',
+    },
+    {
+      'name': 'Ayden Heaven',
+      'position': 'Defender',
+      'number': '26',
+      'image':
+          'https://ballerupdates.com/wp-content/uploads/2024/02/Ayden-Heaven.jpg',
+    },
+    {
+      'name': 'Tyler Fredricson',
+      'position': 'Defender',
+      'number': '33',
+      'image':
+          'https://thepeoplesperson.com/wp-content/uploads/2024/02/tyler-fredricson-man-utd-academy-1024x683.jpg',
+    },
+    {
+      'name': 'Tyrell Malacia',
+      'position': 'Defender',
+      'number': '12',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/267615-1685021873.jpg',
+    },
+    {
+      'name': 'Diego Leon',
+      'position': 'Defender',
+      'number': '35',
+      'image': 'https://www.fifacm.com/content/media/players/24/281639.png',
+    },
+    {
+      'name': 'Noussair Mazraoui',
+      'position': 'Defender',
+      'number': '3',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/257373-1685022212.jpg',
+    },
+    {
+      'name': 'Diogo Dalot',
+      'position': 'Defender',
+      'number': '2',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/357155-1685021743.jpg',
+    },
+    {
+      'name': 'Patrick Dorgu',
+      'position': 'Defender',
+      'number': '13',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/921536-1688632616.jpg',
+    },
 
     // Midfielders
-    {'name': 'Bruno Fernandes', 'position': 'Midfielder', 'number': '8', 'image': 'https://tmssl.akamaized.net/images/portrait/header/240306-1685021798.jpg'},
-    {'name': 'Casemiro', 'position': 'Midfielder', 'number': '18', 'image': 'https://tmssl.akamaized.net/images/portrait/header/10256-1685021571.jpg'},
-    {'name': 'Manuel Ugarte', 'position': 'Midfielder', 'number': '25', 'image': 'https://tmssl.akamaized.net/images/portrait/header/489980-1685350849.jpg'},
-    {'name': 'Kobbie Mainoo', 'position': 'Midfielder', 'number': '37', 'image': 'https://tmssl.akamaized.net/images/portrait/header/798263-1708684742.jpg'},
-    {'name': 'Mason Mount', 'position': 'Midfielder', 'number': '7', 'image': 'https://tmssl.akamaized.net/images/portrait/header/344111-1688632190.jpg'},
+    {
+      'name': 'Bruno Fernandes',
+      'position': 'Midfielder',
+      'number': '8',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/240306-1685021798.jpg',
+    },
+    {
+      'name': 'Casemiro',
+      'position': 'Midfielder',
+      'number': '18',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/10256-1685021571.jpg',
+    },
+    {
+      'name': 'Manuel Ugarte',
+      'position': 'Midfielder',
+      'number': '25',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/489980-1685350849.jpg',
+    },
+    {
+      'name': 'Kobbie Mainoo',
+      'position': 'Midfielder',
+      'number': '37',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/798263-1708684742.jpg',
+    },
+    {
+      'name': 'Mason Mount',
+      'position': 'Midfielder',
+      'number': '7',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/344111-1688632190.jpg',
+    },
 
     // Forwards
-    {'name': 'Amad', 'position': 'Forward', 'number': '16', 'image': 'https://tmssl.akamaized.net/images/portrait/header/536835-1685022135.jpg'},
-    {'name': 'Matheus Cunha', 'position': 'Forward', 'number': '10', 'image': 'https://tmssl.akamaized.net/images/portrait/header/517892-1692886497.jpg'},
-    {'name': 'Bryan Mbeumo', 'position': 'Forward', 'number': '19', 'image': 'https://tmssl.akamaized.net/images/portrait/header/399461-1692886733.jpg'},
-    {'name': 'Shola Lacey', 'position': 'Forward', 'number': '61', 'image': 'https://thepeoplesperson.com/wp-content/uploads/2023/10/shea-lacey-man-utd-academy-1-e1697211116824.jpg'},
-    {'name': 'Joshua Zirkzee', 'position': 'Forward', 'number': '11', 'image': 'https://tmssl.akamaized.net/images/portrait/header/435648-1709720333.jpg'},
-    {'name': 'Benjamin Sesko', 'position': 'Forward', 'number': '30', 'image': 'https://tmssl.akamaized.net/images/portrait/header/628522-1688632408.jpg'},
-    {'name': 'Chido Obi', 'position': 'Forward', 'number': '32', 'image': 'https://tmssl.akamaized.net/images/portrait/header/1004882-1715091726.jpg'},
-  ];
-
-  // --- SHOP (UPDATED) ---
-  static final List<Map<String, dynamic>> shopItems = [
     {
-      'id': 'item_001',
-      'name': 'Home Kit 2023/24',
-      'price': 75.00,
-      'image': 'https://store.manutd.com/content/ws/all/92053423-747f-4447-9896-107577239c4a-800.png',
-      'sizes': ['S', 'M', 'L', 'XL'],
+      'name': 'Amad',
+      'position': 'Forward',
+      'number': '16',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/536835-1685022135.jpg',
     },
     {
-      'id': 'item_002',
-      'name': 'Away Kit 2023/24',
-      'price': 75.00,
-      'image': 'https://images.footballfanatics.com/manchester-united/manchester-united-away-shirt-2023-24_ss5_p-13374826+pv-1+u-whikzoplnj8ohqjhgkbk+v-nodxom2ylz2rslueuyj7.jpg?_s=bm-pi-276639-2165',
-      'sizes': ['S', 'M', 'L'],
+      'name': 'Matheus Cunha',
+      'position': 'Forward',
+      'number': '10',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/517892-1692886497.jpg',
     },
     {
-      'id': 'item_003',
-      'name': 'Garnacho \'Fearless\' Poster',
-      'price': 15.50,
-      'image': 'https://i.ebayimg.com/images/g/q1cAAOSwserk4~a1/s-l1600.jpg',
-      'sizes': [],
+      'name': 'Bryan Mbeumo',
+      'position': 'Forward',
+      'number': '19',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/399461-1692886733.jpg',
     },
     {
-      'id': 'item_004',
-      'name': 'Old Trafford Scarf',
-      'price': 20.00,
-      'image': 'https://store.manutd.com/content/ws/all/0f2a781d-1577-4cfb-810a-289524f0c766-800.png',
-      'sizes': [],
+      'name': 'Shola Lacey',
+      'position': 'Forward',
+      'number': '61',
+      'image':
+          'https://thepeoplesperson.com/wp-content/uploads/2023/10/shea-lacey-man-utd-academy-1-e1697211116824.jpg',
     },
     {
-      'id': 'item_005',
-      'name': 'Team Crest Mug',
-      'price': 12.00,
-      'image': 'https://store.manutd.com/content/ws/all/a71c26b5-e6a3-4a16-95f7-f58c738e4125-800.png',
-      'sizes': [],
+      'name': 'Joshua Zirkzee',
+      'position': 'Forward',
+      'number': '11',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/435648-1709720333.jpg',
     },
     {
-      'id': 'item_006',
-      'name': 'Third Kit 2023/24',
-      'price': 75.00,
-      'image': 'https://i1.adis.ws/i/jpl/jd_DX8921-101_a?w=700&resmode=sharp&qlt=70',
-      'sizes': ['M', 'L', 'XL'],
-    }
+      'name': 'Benjamin Sesko',
+      'position': 'Forward',
+      'number': '30',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/628522-1688632408.jpg',
+    },
+    {
+      'name': 'Chido Obi',
+      'position': 'Forward',
+      'number': '32',
+      'image':
+          'https://tmssl.akamaized.net/images/portrait/header/1004882-1715091726.jpg',
+    },
   ];
 
   // --- FIXTURES ---
@@ -128,9 +245,11 @@ class DummyData {
       'date': '2024-08-24T15:00:00Z',
       'time': '15:00',
       'league': 'Premier League',
-      'logoHome': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
-      'logoAway': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png',
-      'status': 'NS' // Not Started
+      'logoHome':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
+      'logoAway':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png',
+      'status': 'NS', // Not Started
     },
     {
       'homeTeam': 'Brighton',
@@ -138,9 +257,11 @@ class DummyData {
       'date': '2024-08-31T15:00:00Z',
       'time': '15:00',
       'league': 'Premier League',
-      'logoHome': 'https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_logo.svg/1200px-Brighton_%26_Hove_Albion_logo.svg.png',
-      'logoAway': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
-      'status': 'NS'
+      'logoHome':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_logo.svg/1200px-Brighton_%26_Hove_Albion_logo.svg.png',
+      'logoAway':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
+      'status': 'NS',
     },
     {
       'homeTeam': 'Man Utd',
@@ -148,9 +269,11 @@ class DummyData {
       'date': '2025-01-18T15:00:00Z',
       'time': '15:00',
       'league': 'FA Cup',
-      'logoHome': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
-      'logoAway': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png',
-      'status': 'NS'
+      'logoHome':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
+      'logoAway':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png',
+      'status': 'NS',
     },
   ];
 
@@ -161,9 +284,348 @@ class DummyData {
   ];
 
   static final List<Map<String, String>> standingsPL = [
-    {'rank': '1', 'teamName': 'Man City', 'badge': 'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png', 'played': '37', 'win': '27', 'draw': '7', 'loss': '3', 'points': '88'},
-    {'rank': '2', 'teamName': 'Arsenal', 'badge': 'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png', 'played': '37', 'win': '27', 'draw': '5', 'loss': '5', 'points': '86'},
-    {'rank': '3', 'teamName': 'Liverpool', 'badge': 'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png', 'played': '37', 'win': '23', 'draw': '10', 'loss': '4', 'points': '79'},
-    {'rank': '8', 'teamName': 'Manchester United', 'badge': 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png', 'played': '37', 'win': '17', 'draw': '6', 'loss': '14', 'points': '57'},
+    {
+      'intRank': '1',
+      'strTeam': 'Arsenal',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/5/53/Arsenal_FC.svg/1200px-Arsenal_FC.svg.png',
+      'intPlayed': '19',
+      'intWin': '14',
+      'intDraw': '3',
+      'intLoss': '2',
+      'intPoints': '45',
+      'intGoalDifference': '+25',
+      'strForm': 'W W W W L',
+    },
+    {
+      'intRank': '2',
+      'strTeam': 'Manchester City',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/1200px-Manchester_City_FC_badge.svg.png',
+      'intPlayed': '18',
+      'intWin': '13',
+      'intDraw': '1',
+      'intLoss': '4',
+      'intPoints': '40',
+      'intGoalDifference': '+26',
+      'strForm': 'W W W W W',
+    },
+    {
+      'intRank': '3',
+      'strTeam': 'Aston Villa',
+      'strBadge': 'assets/images/aston_villa.png',
+      'intPlayed': '19',
+      'intWin': '12',
+      'intDraw': '3',
+      'intLoss': '4',
+      'intPoints': '39',
+      'intGoalDifference': '+7',
+      'strForm': 'L W W W W',
+    },
+    {
+      'intRank': '4',
+      'strTeam': 'Liverpool',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Liverpool_FC.svg/1200px-Liverpool_FC.svg.png',
+      'intPlayed': '18',
+      'intWin': '10',
+      'intDraw': '2',
+      'intLoss': '6',
+      'intPoints': '32',
+      'intGoalDifference': '+4',
+      'strForm': 'W W W D D',
+    },
+    {
+      'intRank': '5',
+      'strTeam': 'Chelsea',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/1200px-Chelsea_FC.svg.png',
+      'intPlayed': '19',
+      'intWin': '8',
+      'intDraw': '6',
+      'intLoss': '5',
+      'intPoints': '30',
+      'intGoalDifference': '+11',
+      'strForm': 'D L D W D',
+    },
+    {
+      'intRank': '6',
+      'strTeam': 'Manchester United',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Manchester_United_FC_crest.svg/1200px-Manchester_United_FC_crest.svg.png',
+      'intPlayed': '19',
+      'intWin': '8',
+      'intDraw': '6',
+      'intLoss': '5',
+      'intPoints': '30',
+      'intGoalDifference': '+4',
+      'strForm': 'D W L D W',
+    },
+    {
+      'intRank': '7',
+      'strTeam': 'Sunderland',
+      'strBadge': 'assets/images/sunderland.png',
+      'intPlayed': '18',
+      'intWin': '7',
+      'intDraw': '7',
+      'intLoss': '4',
+      'intPoints': '28',
+      'intGoalDifference': '+2',
+      'strForm': 'D D W L D',
+    },
+    {
+      'intRank': '8',
+      'strTeam': 'Everton',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_logo.svg/1200px-Everton_FC_logo.svg.png',
+      'intPlayed': '19',
+      'intWin': '8',
+      'intDraw': '4',
+      'intLoss': '7',
+      'intPoints': '28',
+      'intGoalDifference': '0',
+      'strForm': 'W D L L W',
+    },
+    {
+      'intRank': '9',
+      'strTeam': 'Brentford',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/2/2a/Brentford_FC_crest.svg/1200px-Brentford_FC_crest.svg.png',
+      'intPlayed': '18',
+      'intWin': '8',
+      'intDraw': '2',
+      'intLoss': '8',
+      'intPoints': '26',
+      'intGoalDifference': '+2',
+      'strForm': 'W W D L L',
+    },
+    {
+      'intRank': '10',
+      'strTeam': 'Newcastle United',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Newcastle_United_Logo.svg/1200px-Newcastle_United_Logo.svg.png',
+      'intPlayed': '19',
+      'intWin': '7',
+      'intDraw': '5',
+      'intLoss': '7',
+      'intPoints': '26',
+      'intGoalDifference': '+2',
+      'strForm': 'W L D L W',
+    },
+    {
+      'intRank': '11',
+      'strTeam': 'Crystal Palace',
+      'strBadge': 'assets/images/crystal_palace.png',
+      'intPlayed': '18',
+      'intWin': '7',
+      'intDraw': '5',
+      'intLoss': '6',
+      'intPoints': '26',
+      'intGoalDifference': '+1',
+      'strForm': 'L L L W W',
+    },
+    {
+      'intRank': '12',
+      'strTeam': 'Fulham',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Fulham_FC_%28shield%29.svg/1200px-Fulham_FC_%28shield%29.svg.png',
+      'intPlayed': '18',
+      'intWin': '8',
+      'intDraw': '2',
+      'intLoss': '8',
+      'intPoints': '26',
+      'intGoalDifference': '-1',
+      'strForm': 'W W W L L',
+    },
+    {
+      'intRank': '13',
+      'strTeam': 'Tottenham Hotspur',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/b/b4/Tottenham_Hotspur.svg/1200px-Tottenham_Hotspur.svg.png',
+      'intPlayed': '18',
+      'intWin': '7',
+      'intDraw': '4',
+      'intLoss': '7',
+      'intPoints': '25',
+      'intGoalDifference': '+4',
+      'strForm': 'W L L W D',
+    },
+    {
+      'intRank': '14',
+      'strTeam': 'Brighton & Hove Albion',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/f/fd/Brighton_%26_Hove_Albion_logo.svg/1200px-Brighton_%26_Hove_Albion_logo.svg.png',
+      'intPlayed': '19',
+      'intWin': '6',
+      'intDraw': '7',
+      'intLoss': '6',
+      'intPoints': '25',
+      'intGoalDifference': '+1',
+      'strForm': 'D L D L D',
+    },
+    {
+      'intRank': '15',
+      'strTeam': 'AFC Bournemouth',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/AFC_Bournemouth_%282013%29.svg/1200px-AFC_Bournemouth_%282013%29.svg.png',
+      'intPlayed': '19',
+      'intWin': '5',
+      'intDraw': '8',
+      'intLoss': '6',
+      'intPoints': '23',
+      'intGoalDifference': '-6',
+      'strForm': 'D L D D D',
+    },
+    {
+      'intRank': '16',
+      'strTeam': 'Leeds United',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/5/54/Leeds_United_F.C._logo.svg/1200px-Leeds_United_F.C._logo.svg.png',
+      'intPlayed': '18',
+      'intWin': '5',
+      'intDraw': '5',
+      'intLoss': '8',
+      'intPoints': '20',
+      'intGoalDifference': '-7',
+      'strForm': 'D W D D W',
+    },
+    {
+      'intRank': '17',
+      'strTeam': 'Nottingham Forest',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Nottingham_Forest_F.C._logo.svg/1200px-Nottingham_Forest_F.C._logo.svg.png',
+      'intPlayed': '19',
+      'intWin': '5',
+      'intDraw': '3',
+      'intLoss': '11',
+      'intPoints': '18',
+      'intGoalDifference': '-12',
+      'strForm': 'L L L W L',
+    },
+    {
+      'intRank': '18',
+      'strTeam': 'West Ham United',
+      'strBadge':
+          'https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/1200px-West_Ham_United_FC_logo.svg.png',
+      'intPlayed': '19',
+      'intWin': '3',
+      'intDraw': '5',
+      'intLoss': '11',
+      'intPoints': '14',
+      'intGoalDifference': '-17',
+      'strForm': 'D L L L D',
+    },
+    {
+      'intRank': '19',
+      'strTeam': 'Burnley',
+      'strBadge': 'assets/images/burnley.png',
+      'intPlayed': '19',
+      'intWin': '3',
+      'intDraw': '3',
+      'intLoss': '13',
+      'intPoints': '12',
+      'intGoalDifference': '-17',
+      'strForm': 'L D D L L',
+    },
+    {
+      'intRank': '20',
+      'strTeam': 'Wolverhampton Wanderers',
+      'strBadge': 'assets/images/wolves.png',
+      'intPlayed': '19',
+      'intWin': '0',
+      'intDraw': '3',
+      'intLoss': '16',
+      'intPoints': '3',
+      'intGoalDifference': '-29',
+      'strForm': 'D L L L L',
+    },
+  ];
+
+  static final List<Map<String, dynamic>> shopItems = [
+    {
+      'id': '1',
+      'name': 'Manchester United 25/26 Home Authentic Jersey',
+      'price': 1688280.0,
+      'image': 'assets/images/shop/homemunyuk.png',
+      'description':
+          'Few sporting stages can match the drama Manchester Uniteds iconic home ground has generated over the years. So this adidas authentic jersey pays tribute to the stadium in which it will be starring in 25/26 with a "Theatre of Dreams" sign-off and abstract Old Trafford-inspired graphics on the sleeves. Built for entertaining football, it also features a performance-focused build and a heat-applied club badge.',
+      'sizes': ['S', 'M', 'L', 'XL', 'XXL'],
+    },
+    {
+      'id': '2',
+      'name': 'Manchester United 25/26 Away Authentic Jersey',
+      'price': 1688280.0,
+      'image': 'assets/images/shop/away_v2.png',
+      'description':
+          'Ice-cold Manchester United style finds a fresh look. It wont take fans long to see the influence of the clubs early-90s adidas snowflake kit on this authentic jersey. What are new, though, are those flashes of purple and lilac, and the metallic finish that gives the red devil badge extra lustre. This football shirt has a performance-focused build to keep players cool, calm and collected on the field.',
+      'sizes': ['S', 'M', 'L', 'XL', 'XXL'],
+    },
+    {
+      'id': '3',
+      'name': 'Manchester United 25/26 Third Authentic Jersey',
+      'price': 1969660.0,
+      'image': 'assets/images/shop/third_v2.png',
+      'description':
+          'Part of a clean, classic adidas kit that will transport fans to a golden era. Finished in black, this Manchester United authentic third jersey conjures some of the clubs most iconic players and memorable away performances. A yellow Trefoil and club badge stand out on the chest while more subtle, devilish details are woven into the fabric. Lightweight and focused on performance, this eye-catching shirt was made to create new football memories.',
+      'sizes': ['S', 'M', 'L', 'XL', 'XXL'],
+    },
+    {
+      'id': '4',
+      'name': 'Manchester United x adidas Home Scarf',
+      'price': 539300.0,
+      'image': 'assets/images/shop/scarf_v2.png',
+      'description':
+          'Show your devotion to Manchester United in classic style. Crafted from soft fabric, this adidas football scarf has engineered club details on both sides. The perfect accessory for match days at Old Trafford or for repping your team around town, it will keep you warm in their famous home colours.',
+      'sizes': [], // Accessory, no size
+    },
+    {
+      'id': '5',
+      'name': 'Manchester United x adidas Home Club Ball Red',
+      'price': 469000.0,
+      'image': 'assets/images/shop/ball_v2.png',
+      'description': 'Manchester United x adidas Home Club Ball Red.',
+      'sizes': ['Size 5'], // Standard ball size usually
+    },
+    {
+      'id': '6',
+      'name': 'Manchester United Tiro 25 Competition Presentation Jacket',
+      'price': 1758600.0,
+      'image': 'assets/images/shop/training_v2.png',
+      'description':
+          'Focus on your football fandom in the adidas jacket Manchester United players wear when they talk to the media. Its smooth woven fabric is lined with soft mesh for a comfortable feel. Standing out from purple away kit colours, a woven crest has the final say as you stand with your team.',
+      'sizes': ['S', 'M', 'L', 'XL', 'XXL'],
+    },
+    {
+      'id': '7',
+      'name': 'Manchester United Core Crest Flag Red',
+      'price': 187600.0,
+      'image': 'assets/images/shop/flag_v2.png',
+      'description':
+          'Decorate your space to show you are a true Manchester United fan with this flag. With the classic club crest on a bold, red background, this flag is an essential decoration to show your support for the team. Great for hanging in bedrooms, over desks, or in a cabinet, this flag’s iconic design shows your passion and team pride. 5 x 3',
+      'sizes': [],
+    },
+    {
+      'id': '8',
+      'name': 'Manchester United 25/26 Goalkeeper Long Sleeve Shirt',
+      'price': 1477210.0,
+      'image': 'assets/images/shop/gk_v2.png',
+      'description':
+          'Fly fearlessly between the sticks in an adidas Manchester United goalkeeper jersey built with insights from pro players. Designed for keeper-specific movements, this long sleeve football shirt also includes moisture-managing AEROREADY to ensure nothing breaks your concentration. On the chest, a woven club badge shows whose colours youre defending.',
+    },
+    {
+      'id': '9',
+      'name': 'Manchester United x Adidas Gazelle Black',
+      'price': 2344800.00,
+      'image': 'assets/images/shop/gazelle_v2.png',
+      'description':
+          'Step into a piece of 3-Stripes history while showing your football colours. Starring in signature details that include a soft suede upper, moulded tongue and T-toe, these adidas Gazelle shoes will keep you comfortable whether youre headed to the game or kicking back at home. Manchester Uniteds third kit colours and crest show who you follow.',
+    },
+    {
+      'id': '10',
+      'name': 'Manchester United x adidas 25/26 Gloves Red',
+      'price': 586200.00,
+      'image': 'assets/images/shop/gloves.png',
+      'description': 'Manchester United x adidas 25/26 Gloves Red',
+    },
   ];
 }

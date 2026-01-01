@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../services/api_service.dart'; // Import the ApiService
-import '../data/dummy_data.dart';   // Keep for the list of leagues
+import '../data/dummy_data.dart'; // Keep for the list of leagues
 
 class StandingsScreen extends StatefulWidget {
   const StandingsScreen({super.key});
@@ -72,26 +71,34 @@ class _StandingsScreenState extends State<StandingsScreen> {
 
   Widget _buildLeagueSelector() {
     return Padding(
+      // Reduced vertical padding to make it more compact if needed, but keeping consistent
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: DropdownButtonFormField<String>(
-        value: _selectedLeague,
-        items: DummyData.leagues.map((l) {
-          return DropdownMenuItem(
-            value: l['id'],
-            child: Text(l['name']!),
-          );
-        }).toList(),
-        onChanged: (value) {
-          if (value != null && value != _selectedLeague) {
-            _selectedLeague = value;
-            // When the user selects a new league, fetch the new standings.
-            _fetchStandings();
-          }
-        },
-        decoration: const InputDecoration(
-          labelText: 'League',
-          border: OutlineInputBorder(),
-        ),
+      child: Row(
+        children: [
+          // Optional: You could put the logo here too, but placing it in the header row is closer to the table
+          Expanded(
+            child: DropdownButtonFormField<String>(
+              value: _selectedLeague,
+              items:
+                  DummyData.leagues.map((l) {
+                    return DropdownMenuItem(
+                      value: l['id'],
+                      child: Text(l['name']!),
+                    );
+                  }).toList(),
+              onChanged: (value) {
+                if (value != null && value != _selectedLeague) {
+                  _selectedLeague = value;
+                  _fetchStandings();
+                }
+              },
+              decoration: const InputDecoration(
+                labelText: 'League',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -103,13 +110,44 @@ class _StandingsScreenState extends State<StandingsScreen> {
         color: Colors.grey[200],
         border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          SizedBox(width: 30, child: Text('Pos', style: TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(child: Text('Club', style: TextStyle(fontWeight: FontWeight.bold))),
-          SizedBox(width: 30, child: Text('Pl', style: TextStyle(fontWeight: FontWeight.bold))),
-          SizedBox(width: 30, child: Text('GD', style: TextStyle(fontWeight: FontWeight.bold))),
-          SizedBox(width: 40, child: Text('Pts', style: TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.right)),
+          // Added Premier League Logo
+          Image.network(
+            'https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Premier_League_Logo.svg/1200px-Premier_League_Logo.svg.png',
+            width: 24,
+            height: 24,
+            errorBuilder:
+                (context, error, stackTrace) => const Icon(
+                  Icons.sports_soccer,
+                  size: 24,
+                  color: Colors.purple,
+                ),
+          ),
+          const SizedBox(width: 8),
+          const SizedBox(
+            width: 30,
+            child: Text('Pos', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const Expanded(
+            child: Text('Club', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(
+            width: 30,
+            child: Text('Pl', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(
+            width: 30,
+            child: Text('GD', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+          const SizedBox(
+            width: 40,
+            child: Text(
+              'Pts',
+              style: TextStyle(fontWeight: FontWeight.bold),
+              textAlign: TextAlign.right,
+            ),
+          ),
         ],
       ),
     );
@@ -122,7 +160,9 @@ class _StandingsScreenState extends State<StandingsScreen> {
       itemBuilder: (context, index) {
         final team = standings[index];
         final teamName = team['strTeam'] ?? 'Unknown Team';
-        final isMU = teamName.contains('Man United') || teamName.contains('Manchester United');
+        final isMU =
+            teamName.contains('Man United') ||
+            teamName.contains('Manchester United');
         final style = TextStyle(
           fontWeight: isMU ? FontWeight.bold : FontWeight.normal,
           color: isMU ? Colors.red.shade800 : Colors.black,
@@ -141,15 +181,64 @@ class _StandingsScreenState extends State<StandingsScreen> {
                 child: Row(
                   children: [
                     if (team['strBadge'] != null && team['strBadge'].isNotEmpty)
-                      Image.network(team['strBadge'], width: 20, height: 20, errorBuilder: (c,e,s) => const Icon(Icons.shield, size: 20, color: Colors.grey)),
+                      team['strBadge'].startsWith('http')
+                          ? Image.network(
+                            team['strBadge'],
+                            width: 20,
+                            height: 20,
+                            errorBuilder:
+                                (c, e, s) => const Icon(
+                                  Icons.shield,
+                                  size: 20,
+                                  color: Colors.grey,
+                                ),
+                          )
+                          : Image.asset(
+                            team['strBadge'],
+                            width: 20,
+                            height: 20,
+                            errorBuilder:
+                                (c, e, s) => const Icon(
+                                  Icons.shield,
+                                  size: 20,
+                                  color: Colors.grey,
+                                ),
+                          ),
                     const SizedBox(width: 8),
-                    Flexible(child: Text(teamName, style: style, overflow: TextOverflow.ellipsis)),
+                    Flexible(
+                      child: Text(
+                        teamName,
+                        style: style,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(width: 30, child: Text(team['intPlayed']?.toString() ?? '-', style: style, textAlign: TextAlign.center)),
-              SizedBox(width: 30, child: Text(team['intGoalDifference']?.toString() ?? '-', style: style, textAlign: TextAlign.center)),
-              SizedBox(width: 40, child: Text(team['intPoints']?.toString() ?? '-', style: const TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.right)),
+              SizedBox(
+                width: 30,
+                child: Text(
+                  team['intPlayed']?.toString() ?? '-',
+                  style: style,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                width: 30,
+                child: Text(
+                  team['intGoalDifference']?.toString() ?? '-',
+                  style: style,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                width: 40,
+                child: Text(
+                  team['intPoints']?.toString() ?? '-',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.right,
+                ),
+              ),
             ],
           ),
         );

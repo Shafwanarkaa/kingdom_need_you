@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
+import 'package:intl/intl.dart';
 import './product_detail_screen.dart';
 
 class ShopScreen extends StatelessWidget {
@@ -36,7 +36,8 @@ class ShopScreen extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      elevation: 3,
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -51,42 +52,66 @@ class ShopScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
-                color: Colors.white,
-                child: imageUrl.isNotEmpty
-                    ? Image.network(
-                        imageUrl,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Center(
-                            child: Icon(Icons.shopping_bag_outlined, color: Colors.grey, size: 50),
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: Icon(Icons.shopping_bag_outlined, color: Colors.grey, size: 50),
-                      ),
+                color: Colors.white, // Subtle background
+                child:
+                    imageUrl.isNotEmpty
+                        ? (imageUrl.startsWith('http')
+                            ? Image.network(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (context, error, stackTrace) => const Center(
+                                    child: Icon(
+                                      Icons.broken_image,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                            )
+                            : Image.asset(
+                              imageUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder:
+                                  (context, error, stackTrace) => const Center(
+                                    child: Icon(
+                                      Icons.broken_image,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                            ))
+                        : const Center(
+                          child: Icon(
+                            Icons.shopping_bag_outlined,
+                            color: Colors.grey,
+                            size: 40,
+                          ),
+                        ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    '£${price.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    NumberFormat.currency(
+                      locale: 'id_ID',
+                      symbol: 'Rp ',
+                      decimalDigits: 0,
+                    ).format(price),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.red.shade800,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
