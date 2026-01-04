@@ -27,164 +27,228 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black,
-        actions: [
-          Consumer<CartService>(
-            builder: (context, cart, child) {
-              return Badge(
-                label: Text(cart.itemCount.toString()),
-                isLabelVisible: cart.itemCount > 0,
-                child: IconButton(
-                  icon: const Icon(Icons.shopping_cart_outlined),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const CartScreen(),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // 1. Hero Image Area (Full width, subtle background)
-                  Container(
-                    height: 350,
-                    width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.grey[50]),
-                    child:
-                        imageUrl.isNotEmpty
-                            ? (imageUrl.startsWith('http')
-                                ? Image.network(
-                                  imageUrl,
-                                  fit:
-                                      BoxFit
-                                          .contain, // Contain ensures the whole product is seen
-                                  errorBuilder:
-                                      (context, error, stackTrace) =>
-                                          const Center(
-                                            child: Icon(
-                                              Icons.broken_image,
-                                              size: 50,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                )
-                                : Image.asset(
-                                  imageUrl,
-                                  fit: BoxFit.contain,
-                                  errorBuilder:
-                                      (context, error, stackTrace) =>
-                                          const Center(
-                                            child: Icon(
-                                              Icons.broken_image,
-                                              size: 50,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                ))
-                            : const Center(
-                              child: Icon(
-                                Icons.shopping_bag_outlined,
-                                size: 60,
-                                color: Colors.grey,
-                              ),
-                            ),
+          CustomScrollView(
+            slivers: [
+              // 1. Premium SliverAppBar with Hero Image
+              SliverAppBar(
+                expandedHeight: 400.0,
+                pinned: true,
+                elevation: 0,
+                backgroundColor: const Color(0xFFDA291C),
+                leading: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.white,
                   ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 2. Title and Price
-                        Text(
-                          name,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                  onPressed: () => Navigator.pop(context),
+                ),
+                actions: [
+                  Consumer<CartService>(
+                    builder: (context, cart, child) {
+                      return Badge(
+                        label: Text(cart.itemCount.toString()),
+                        isLabelVisible: cart.itemCount > 0,
+                        backgroundColor: const Color(0xFFFDB913),
+                        textColor: Colors.black,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.shopping_cart_outlined,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CartScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(width: 16),
+                ],
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Product Image Content
+                      Container(
+                        color: Colors.white,
+                        child:
+                            imageUrl.isNotEmpty
+                                ? (imageUrl.startsWith('http')
+                                    ? Image.network(
+                                      imageUrl,
+                                      fit: BoxFit.contain,
+                                    )
+                                    : Image.asset(
+                                      imageUrl,
+                                      fit: BoxFit.contain,
+                                    ))
+                                : const Icon(
+                                  Icons.shopping_bag_outlined,
+                                  size: 80,
+                                  color: Colors.grey,
+                                ),
+                      ),
+                      // Top Gradient for better icon visibility
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.black.withOpacity(0.5),
+                                Colors.transparent,
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          NumberFormat.currency(
-                            locale: 'id_ID',
-                            symbol: 'Rp ',
-                            decimalDigits: 0,
-                          ).format(price),
-                          style: Theme.of(
-                            context,
-                          ).textTheme.headlineSmall?.copyWith(
-                            color: Colors.red.shade700,
-                            fontWeight: FontWeight.bold,
+                      ),
+                      // Bottom subtle gradient for image separation
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.05),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
+              // 2. Product Details
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category Badge (Optional/Static for now)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFDA291C).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text(
+                          'OFFICIAL MERCHANDISE',
+                          style: TextStyle(
+                            color: Color(0xFFDA291C),
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.0,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Title
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          height: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Price
+                      Text(
+                        NumberFormat.currency(
+                          locale: 'id_ID',
+                          symbol: 'Rp ',
+                          decimalDigits: 0,
+                        ).format(price),
+                        style: const TextStyle(
+                          color: Color(0xFFDA291C),
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 32),
+                      const Divider(height: 1),
+                      const SizedBox(height: 24),
+
+                      // 3. Size Selector
+                      if (sizes.isNotEmpty) ...[
+                        _buildSizeSelector(context, sizes.cast<String>()),
                         const SizedBox(height: 24),
                         const Divider(height: 1),
                         const SizedBox(height: 24),
-
-                        // 3. Size Selector (if applicable)
-                        if (sizes.isNotEmpty) ...[
-                          _buildSizeSelector(context, sizes.cast<String>()),
-                          const SizedBox(height: 24),
-                          const Divider(height: 1),
-                          const SizedBox(height: 24),
-                        ],
-
-                        // 4. Description
-                        Text(
-                          "Description",
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          widget.product['description'] as String? ??
-                              'No description available.',
-                          style: Theme.of(context).textTheme.bodyLarge
-                              ?.copyWith(color: Colors.grey[700], height: 1.5),
-                        ),
-                        const SizedBox(height: 40), // Bottom padding
                       ],
-                    ),
+
+                      // 4. Description
+                      const Text(
+                        "Description",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        widget.product['description'] as String? ??
+                            'No description available.',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 15,
+                          height: 1.6,
+                        ),
+                      ),
+                      const SizedBox(height: 100), // Spacing for bottom button
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // 5. Fixed Bottom Button
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 15,
+                    offset: const Offset(0, -5),
                   ),
                 ],
               ),
-            ),
-          ),
-
-          // 5. Fixed Bottom Action Bar
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -5),
-                ),
-              ],
-            ),
-            child: SafeArea(
               child: ElevatedButton(
                 onPressed: () {
                   if (sizes.isNotEmpty && _selectedSize == null) {
@@ -197,14 +261,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     );
                     return;
                   }
-
                   cartService.addItem(widget.product, _selectedSize);
-
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Added $name to cart!'),
+                      content: Text('Added to cart!'),
                       behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.green.shade700,
+                      backgroundColor: const Color(0xFFDA291C),
                       duration: const Duration(seconds: 2),
                       action: SnackBarAction(
                         label: 'VIEW CART',
@@ -213,7 +275,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CartScreen(),
+                              builder: (context) => const CartScreen(),
                             ),
                           );
                         },
@@ -222,19 +284,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade700,
+                  backgroundColor: const Color(0xFFDA291C),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(16),
                   ),
                   elevation: 0,
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shopping_cart_outlined, size: 20),
-                    SizedBox(width: 8),
+                    Icon(Icons.shopping_bag_outlined, size: 22),
+                    SizedBox(width: 12),
                     Text(
                       'ADD TO CART',
                       style: TextStyle(
