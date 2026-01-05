@@ -78,6 +78,18 @@ To use the CRUD features, create a resource named `contents` in MockAPI with the
 flutter run
 ```
 
+## 🔑 Login Credentials
+
+For demonstration purposes, you can use the following credentials:
+
+| Role      | Username | Password | Access Level           |
+| --------- | -------- | -------- | ---------------------- |
+| **Admin** | `admin`  | `mu123`  | Full CRUD & Moderation |
+| **User**  | _(any)_  | _(any)_  | Read-only + Shoutouts  |
+
+> [!NOTE]
+> Entering any username other than `admin` will log you in with a standard User role.
+
 ## 🏗️ Technical Stack
 
 - **Framework**: Flutter (Material 3)
@@ -85,11 +97,6 @@ flutter run
 - **Backend Persistence**: MockAPI
 - **Security**: flutter_dotenv (API Key Protection)
 - **Data Sources**: NewsAPI, API-Football (RapidAPI), Football-Data.org
-
-## 🛡️ Administrative Access
-
-- **Access**: Select "Admin" role on the login screen or click the Admin Dashboard in the Drawer.
-- **Security Note**: This version uses a simplified role-based simulation. Ensure `.env` is never committed to version control.
 
 ---
 
