@@ -712,6 +712,7 @@ class DummyData {
       'image': 'assets/images/shop/gk_v2.png',
       'description':
           'Fly fearlessly between the sticks in an adidas Manchester United goalkeeper jersey built with insights from pro players. Designed for keeper-specific movements, this long sleeve football shirt also includes moisture-managing AEROREADY to ensure nothing breaks your concentration. On the chest, a woven club badge shows whose colours youre defending.',
+      'sizes': ['S', 'M', 'L', 'XL', 'XXL'],
     },
     {
       'id': '9',
@@ -720,6 +721,25 @@ class DummyData {
       'image': 'assets/images/shop/gazelle_v2.png',
       'description':
           'Step into a piece of 3-Stripes history while showing your football colours. Starring in signature details that include a soft suede upper, moulded tongue and T-toe, these adidas Gazelle shoes will keep you comfortable whether youre headed to the game or kicking back at home. Manchester Uniteds third kit colours and crest show who you follow.',
+      'sizes': [
+        '5',
+        '5.5',
+        '6',
+        '6.5',
+        '7',
+        '7.5',
+        '8',
+        '8.5',
+        '9',
+        '9.5',
+        '10',
+        '10.5',
+        '11',
+        '11.5',
+        '12',
+        '12.5',
+        '13',
+      ],
     },
     {
       'id': '10',

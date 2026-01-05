@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 40),
                   const Text(
-                    'KINGDOM NEED YOU',
+                    'Manchester United',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 28,

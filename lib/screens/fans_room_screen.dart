@@ -29,19 +29,32 @@ class _FansRoomScreenState extends State<FansRoomScreen> {
     final auth = context.read<AuthService>();
     final dataService = context.read<DataService>();
 
-    dataService.addShoutout(
-      auth.username,
-      _messageController.text.trim(),
-      'https://www.gravatar.com/avatar/${auth.username.length}?d=identicon', // Simple avatar
-      auth.role == UserRole.admin ? 'Staff MU' : 'Fans MU',
-    );
+    try {
+      await dataService.addShoutout(
+        auth.username,
+        _messageController.text.trim(),
+        'https://www.gravatar.com/avatar/${auth.username.length}?d=identicon', // Simple avatar
+        auth.role == UserRole.admin ? 'Staff MU' : 'Fans MU',
+      );
 
-    _messageController.clear();
-    setState(() => _isSubmitting = false);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Pesan kamu sudah terkirim! GGMU! 🔴')),
-    );
+      if (mounted) {
+        _messageController.clear();
+        setState(() => _isSubmitting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Pesan kamu sudah terkirim! GGMU! 🔴')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSubmitting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Gagal mengirim pesan: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   @override

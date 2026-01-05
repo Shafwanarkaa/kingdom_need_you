@@ -7,10 +7,18 @@ import '../models/shoutout.dart';
 import '../data/dummy_data.dart';
 
 class DataService extends ChangeNotifier {
-  final String _baseUrl = dotenv.get(
-    'MOCK_API_URL',
-    fallback: 'https://695b77621d8041d5eeb6d4dc.mockapi.io/fansroom',
-  );
+  String get _baseUrl {
+    final url = dotenv.get(
+      'MOCK_API_URL',
+      fallback: 'https://695b77621d8041d5eeb6d4dc.mockapi.io/fansroom',
+    );
+    // Remove trailing slash if present to prevent 404/CORS issues on some APIs
+    String trimmed = url.trim();
+    if (trimmed.endsWith('/')) {
+      trimmed = trimmed.substring(0, trimmed.length - 1);
+    }
+    return trimmed;
+  }
 
   List<NewsArticle> _newsArticles = [];
   List<Map<String, dynamic>> _products = [];
@@ -76,6 +84,9 @@ class DataService extends ChangeNotifier {
         _newsArticles = news.isEmpty ? List.from(DummyData.news) : news;
         _products =
             products.isEmpty ? List.from(DummyData.shopItems) : products;
+        // Sort shoutouts: Newest first
+        shoutouts.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
         _shoutouts = shoutouts;
       }
     } catch (e) {
@@ -91,16 +102,31 @@ class DataService extends ChangeNotifier {
   // --- Unified CRUD Methods ---
   Future<void> addItem(Map<String, dynamic> item) async {
     try {
+      print('Adding item to: $_baseUrl');
+      print('Item data: ${json.encode(item)}');
+
       final response = await http.post(
         Uri.parse(_baseUrl),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: json.encode(item),
       );
-      if (response.statusCode == 201) {
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
         await fetchAll();
+      } else {
+        throw Exception(
+          'Server returned ${response.statusCode}: ${response.body}',
+        );
       }
     } catch (e) {
       print('Error adding item: $e');
+      rethrow; // Ensure UI knows about the failure
     }
   }
 
@@ -180,16 +206,17 @@ class DataService extends ChangeNotifier {
     deleteItem(id);
   }
 
-  void addShoutout(
+  Future<void> addShoutout(
     String userName,
     String content,
     String imageUrl,
     String meta,
-  ) {
-    addItem({
+  ) async {
+    await addItem({
       'type': 'shoutout',
       'user_name': userName,
       'content': content,
+      'context': content, // Send both for compatibility
       'imageUrl': imageUrl,
       'meta': meta,
       'createdAt': DateTime.now().toIso8601String(),
