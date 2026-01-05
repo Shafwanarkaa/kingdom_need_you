@@ -1,5 +1,5 @@
-
 class NewsArticle {
+  final String id;
   final String title;
   final String? author;
   final String url;
@@ -8,6 +8,7 @@ class NewsArticle {
   final String? content;
 
   NewsArticle({
+    this.id = '',
     required this.title,
     this.author,
     required this.url,
@@ -16,15 +17,26 @@ class NewsArticle {
     this.content,
   });
 
-  // Factory constructor to create a NewsArticle from a JSON object
   factory NewsArticle.fromJson(Map<String, dynamic> json) {
     return NewsArticle(
-      title: json['title'] as String,
-      author: json['author'] as String?,
-      url: json['url'] as String,
-      urlToImage: json['urlToImage'] as String?,
-      publishedAt: DateTime.parse(json['publishedAt'] as String),
+      id: json['id']?.toString() ?? '',
+      title: json['user_name'] ?? (json['title'] ?? ''),
+      author: json['meta'] ?? (json['author'] ?? ''),
+      url: json['url'] ?? '',
+      urlToImage: json['imageUrl'] ?? (json['urlToImage'] ?? ''),
+      publishedAt: _parseDate(json['createdAt'] ?? json['publishedAt']),
       content: json['content'] as String?,
     );
+  }
+
+  static DateTime _parseDate(dynamic date) {
+    if (date == null) return DateTime.now();
+    if (date is int) {
+      return DateTime.fromMillisecondsSinceEpoch(date * 1000);
+    }
+    if (date is String) {
+      return DateTime.tryParse(date) ?? DateTime.now();
+    }
+    return DateTime.now();
   }
 }

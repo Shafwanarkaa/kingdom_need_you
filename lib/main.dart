@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // Import provider
 import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import dotenv
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Import dotenv
 import 'screens/splash_screen.dart';
+import 'screens/login_screen.dart'; // New import
+import 'screens/home_screen.dart'; // New import
 import 'services/cart_service.dart'; // Import the new CartService
+import 'services/data_service.dart'; // Import DataService
+import 'services/auth_service.dart'; // New import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,12 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Wrap the entire app with a ChangeNotifierProvider.
-    // This makes the CartService available to all widgets in the app.
-    return ChangeNotifierProvider(
-      create: (context) => CartService(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartService()),
+        ChangeNotifierProvider(create: (context) => DataService()),
+        ChangeNotifierProvider(
+          create: (context) => AuthService(),
+        ), // Added AuthService
+      ],
       child: MaterialApp(
         title: 'Manchester United',
+        initialRoute: '/login', // Set initial route to LoginScreen
         theme: ThemeData(
           // Manchester United Official Colors
           colorScheme: ColorScheme.light(
@@ -103,7 +111,11 @@ class MyApp extends StatelessWidget {
           // Use Material 3
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        routes: {
+          '/': (context) => const SplashScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/home': (context) => const HomeScreen(),
+        },
         debugShowCheckedModeBanner: false,
       ),
     );

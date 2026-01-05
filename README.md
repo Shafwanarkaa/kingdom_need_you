@@ -1,110 +1,71 @@
-# 🔴 Manchester United Fan App 🔴
+# 🔴 Manchester United Fan App (Kingdom Need You)
 
-[![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
-[![MU FC](https://img.shields.io/badge/Manchester_United-DA291C?style=for-the-badge&logo=manchester-united&logoColor=white)](https://www.manutd.com)
+A premium, modern fan engagement application for Manchester United supporters, featuring real-time data integration, persistent community features, and a secure administrative dashboard.
 
-Welcome to the ultimate **Manchester United Fan Experience**! This Flutter application is designed for the most loyal Red Devils, providing a premium, modern, and high-performance interface to stay updated with your favorite club.
+![MU Branding](https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg)
 
----
+## 🚀 Recent Updates
 
-## ✨ Key Features
+- **MockAPI Persistence**: Full CRUD integration for News, Products, and Fans Room.
+- **Fans Room (Shoutouts)**: A real-time guest book for community engagement.
+- **Secure Auth System**: Role-based access (Admin/User) with a stunning UI.
+- **Environment Security**: Sensitive API URLs and keys are now managed via `.env`.
 
-### 🏟️ Match Hub
+## ✨ Features
 
-- **Live-Sync Standings:** Accurate Premier League table with MU highlighted in red.
-- **Dynamic Fixtures:** Stay updated with the latest results (like the 1-1 draw at Leeds) and upcoming match schedules.
-- **MU Branding:** Every screen is meticulously styled with official Red, Black, and Gold colors.
+### 🏟️ Fan Experience
 
-### 🛍️ Official Shop
+- **Latest News**: Real-time articles fetched from NewsAPI and local MockAPI.
+- **Fans Room**: Post and view community shoutouts with real-time updates.
+- **Match Center**: Detailed fixtures and Premier League standings (FotMob style).
+- **MU Shop**: Premium carousel and product listings for official merchandise.
+- **Squad List**: Visual roster with player details and White-listed local photos for key staff/players.
 
-- **Featured Carousel:** Smooth auto-scrolling carousel showcasing the latest kits and merchandise.
-- **Premium Product Details:** A sophisticated `SliverAppBar` experience that transitions from transparent to solid MU Red as you scroll.
-- **Shopping Cart:** Seamlessly add items and manage your merchandise inventory.
+### 🛠️ Admin Dashboard (PRO Mode)
 
-### 👥 Squad Explorer
+- **Content Management**: Add, Update, and Delete News or Shop products.
+- **Moderation**: Admin-only ability to delete Fans Room shoutouts.
+- **Dynamic Sync**: Changes reflect instantly across all user devices.
 
-- **Detailed Player Cards:** Explore the squad with high-quality images, jersey numbers, and position classifications.
+## 🔐 Installation & Setup
 
-### ⚡ Performance & Polish
-
-- **Animated Splash Screen:** A beautiful, branded entrance to the app.
-- **Web & Mobile Support:** Fully responsive design that looks stunning on mobile devices and web browsers.
-- **SEO Optimized (Web):** Custom MU favicon and metadata for a professional web presence.
-
----
-
-## 🚀 Getting Started
-
-Follow these steps to get the project running on your local machine.
-
-### Prerequisites
-
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) installed.
-- An IDE (VS Code, Android Studio, or IntelliJ).
-
-### Installation
-
-1. **Clone the repository:**
+1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/manchester-united-fan-app.git
-   cd manchester-united-fan-app
+   git clone https://github.com/shafwanarka/kingdom_need_you.git
    ```
 
-2. **API Configuration:**
-
-   - Create a `.env` file in the root directory:
-     ```bash
-     cp .env.example .env
-     ```
-   - Open `.env` and replace the placeholders with your own keys from:
-     - [Football-Data.org](https://www.football-data.org/)
-     - [RapidAPI (API-Football)](https://rapidapi.com/api-sports/api/api-football)
-     - [NewsAPI](https://newsapi.org/)
-
-3. **Install dependencies:**
+2. **Install Dependencies**:
 
    ```bash
    flutter pub get
    ```
 
-4. **Run the application:**
+3. **Environment Configuration**:
+   Create a `.env` file in the root directory (use `.env.example` as a template):
 
-   ```bash
-   # Run on connected mobile device or emulator
-   flutter run
-
-   # Run on Chrome/Edge (Web)
-   flutter run -d edge
+   ```env
+   MOCK_API_URL=your_mockapi_endpoint_here
+   NEWS_API_KEY=your_newsapi_key_here
    ```
 
----
+4. **Run the Application**:
+   ```bash
+   flutter run
+   ```
 
-## 🎨 Design Philosophy
+## 🏗️ Technical Stack
 
-The app follows a **"Simple, Elegant, Modern"** aesthetic. It utilizes:
+- **Framework**: Flutter (Material 3)
+- **State Management**: Provider
+- **Backend**: MockAPI (Persistent JSON Storage)
+- **Security**: flutter_dotenv
+- **APIs**: NewsAPI, TheSportsDB
 
-- **Primary Color:** `#DA291C` (MU Red)
-- **Secondary Color:** `#000000` (Classic Black)
-- **Accent Color:** `#FDB913` (Glory Gold)
-- **Typography:** Bold, clean headers and accessible body text.
+## 🛡️ Administrative Access
 
----
-
-## 🛠️ Built With
-
-- **Flutter** - The UI framework.
-- **Provider** - For efficient state management (Cart Service).
-- **Intl** - For currency and date formatting.
-- **http** - For real-time API integrations.
+Access the **Admin Dashboard** via the Sidebar Drawer after logging in with administrative credentials. From there, you can manage the app's real-time content.
 
 ---
 
-## 📜 Credits
-
-Developed with Passion for the Red Devils by **Shafwan**.
-
----
-
-**Glory Glory Manchester United! 🔴⚫✨**
+_GGMU - Glory Glory Manchester United!_

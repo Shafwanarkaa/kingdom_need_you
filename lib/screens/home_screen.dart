@@ -5,6 +5,9 @@ import 'news_screen.dart';
 import 'calendar_screen.dart';
 import 'shop_screen.dart';
 import 'cart_screen.dart';
+import 'admin_screen.dart';
+import 'fans_room_screen.dart';
+import '../services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,6 +49,99 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(_getAppBarTitle(_selectedIndex)),
         actions: [if (_selectedIndex == 3) _buildCartIcon(context)],
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(color: Color(0xFFDA291C)),
+              accountName: Row(
+                children: [
+                  Text(
+                    context.read<AuthService>().username,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  if (context.read<AuthService>().isAdmin) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDB913),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        'PRO',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              accountEmail: Text(context.read<AuthService>().email),
+              currentAccountPicture: const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, color: Color(0xFFDA291C), size: 40),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.forum_outlined,
+                color: Color(0xFFDA291C),
+              ),
+              title: const Text('Fans Room'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FansRoomScreen(),
+                  ),
+                );
+              },
+            ),
+            if (context.watch<AuthService>().isAdmin)
+              ListTile(
+                leading: const Icon(
+                  Icons.admin_panel_settings,
+                  color: Color(0xFFDA291C),
+                ),
+                title: const Text('Admin Dashboard'),
+                onTap: () {
+                  Navigator.pop(context); // Close drawer
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AdminScreen(),
+                    ),
+                  );
+                },
+              ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.grey),
+              title: const Text('Logout'),
+              onTap: () {
+                context.read<AuthService>().logout();
+                Navigator.of(context).pushReplacementNamed('/login');
+              },
+            ),
+            const Divider(),
+            const Spacer(),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Version 1.0.0',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ),
+          ],
+        ),
       ),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(

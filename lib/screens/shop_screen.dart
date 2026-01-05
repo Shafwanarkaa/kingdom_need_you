@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../data/dummy_data.dart';
+import 'package:provider/provider.dart';
+import '../services/data_service.dart';
 import 'package:intl/intl.dart';
 import './product_detail_screen.dart';
 
@@ -8,23 +9,28 @@ class ShopScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shopItems = DummyData.shopItems;
+    final shopItems = Provider.of<DataService>(context).products;
 
     // FIX: Removed Scaffold and AppBar. The Padding is now the root widget.
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 0.75,
+    return RefreshIndicator(
+      onRefresh:
+          () => Provider.of<DataService>(context, listen: false).fetchAll(),
+      color: const Color(0xFFDA291C),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: 0.75,
+          ),
+          itemCount: shopItems.length,
+          itemBuilder: (context, index) {
+            final item = shopItems[index];
+            return _buildShopItemCard(context, item);
+          },
         ),
-        itemCount: shopItems.length,
-        itemBuilder: (context, index) {
-          final item = shopItems[index];
-          return _buildShopItemCard(context, item);
-        },
       ),
     );
   }
