@@ -7,7 +7,10 @@ import '../models/shoutout.dart';
 import '../data/dummy_data.dart';
 
 class DataService extends ChangeNotifier {
-  final String _baseUrl = dotenv.get('MOCK_API_URL');
+  final String _baseUrl = dotenv.get(
+    'MOCK_API_URL',
+    fallback: 'https://695b77621d8041d5eeb6d4dc.mockapi.io/fansroom',
+  );
 
   List<NewsArticle> _newsArticles = [];
   List<Map<String, dynamic>> _products = [];
@@ -54,10 +57,12 @@ class DataService extends ChangeNotifier {
                 'name': item['user_name'] ?? 'Product',
                 'price': double.tryParse(item['price'].toString()) ?? 0.0,
                 'image': item['imageUrl'],
-                'description': item['content'],
+                'description': item['content'] ?? (item['context'] ?? ''),
                 'brand': item['meta'],
               });
-            } else if (type == 'shoutout') {
+            } else {
+              // Default: Treat 'shoutout' OR any unknown/missing types as shoutouts
+              // This makes it easier for the user to just create 1 resource for fansroom.
               shoutouts.add(Shoutout.fromJson(item));
             }
           } catch (e) {

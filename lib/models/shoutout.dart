@@ -19,7 +19,7 @@ class Shoutout {
     return Shoutout(
       id: json['id'] ?? '',
       userName: json['user_name'] ?? 'Anonymous',
-      content: json['content'] ?? '',
+      content: json['content'] ?? (json['context'] ?? ''),
       imageUrl:
           json['imageUrl'] ??
           'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
