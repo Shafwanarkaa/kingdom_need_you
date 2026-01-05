@@ -39,8 +39,8 @@ Before starting, ensure you have the following installed:
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/shafwanarka/kingdom_need_you.git
-cd kingdom_need_you
+git clone https://github.com/Shafwanarkaa/manchester_united_apps.git
+cd manchester_united_apps
 ```
 
 ### 2️⃣ Install Dependencies
