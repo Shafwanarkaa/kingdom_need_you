@@ -25,46 +25,71 @@ A premium, modern fan engagement application for Manchester United supporters, f
 
 - **Content Management**: Add, Update, and Delete News or Shop products.
 - **Moderation**: Admin-only ability to delete Fans Room shoutouts.
-- **Dynamic Sync**: Changes reflect instantly across all user devices.
 
 ## 🔐 Installation & Setup
 
-1. **Clone the repository**:
+### 0️⃣ Prerequisites
 
-   ```bash
-   git clone https://github.com/shafwanarka/kingdom_need_you.git
-   ```
+Before starting, ensure you have the following installed:
 
-2. **Install Dependencies**:
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (v3.0.0 or higher)
+- [Dart SDK](https://dart.dev/get-started/sdk)
+- An IDE (VS Code or Android Studio) with Flutter/Dart extensions.
 
-   ```bash
-   flutter pub get
-   ```
+### 1️⃣ Clone the repository
 
-3. **Environment Configuration**:
-   Create a `.env` file in the root directory (use `.env.example` as a template):
+```bash
+git clone https://github.com/shafwanarka/kingdom_need_you.git
+cd kingdom_need_you
+```
 
-   ```env
-   MOCK_API_URL=your_mockapi_endpoint_here
-   NEWS_API_KEY=your_newsapi_key_here
-   ```
+### 2️⃣ Install Dependencies
 
-4. **Run the Application**:
-   ```bash
-   flutter run
-   ```
+```bash
+flutter pub get
+```
+
+### 3️⃣ Environment & API Setup
+
+Create a `.env` file in the root directory. You will need keys from the following services:
+
+| Key             | Description                  | Source                                                       |
+| --------------- | ---------------------------- | ------------------------------------------------------------ |
+| `MOCK_API_URL`  | Endpoint for CRUD data       | [MockAPI](https://mockapi.io)                                |
+| `NEWS_API_KEY`  | Key for latest MU news       | [NewsAPI](https://newsapi.org)                               |
+| `RAPID_API_KEY` | Key for fixtures & standings | [RapidAPI](https://rapidapi.com/api-sports/api/api-football) |
+| `FD_API_KEY`    | Alternative football data    | [Football-Data.org](https://www.football-data.org)           |
+
+### 4️⃣ MockAPI Schema Configuration
+
+To use the CRUD features, create a resource named `contents` in MockAPI with the following fields:
+
+- `type`: String (values: `shoutout`, `news`, or `product`)
+- `user_name`: String
+- `content`: Text
+- `imageUrl`: String
+- `meta`: String
+- `price`: Number
+- `createdAt`: DateTime
+
+### 5️⃣ Run the Application
+
+```bash
+flutter run
+```
 
 ## 🏗️ Technical Stack
 
 - **Framework**: Flutter (Material 3)
 - **State Management**: Provider
-- **Backend**: MockAPI (Persistent JSON Storage)
-- **Security**: flutter_dotenv
-- **APIs**: NewsAPI, TheSportsDB
+- **Backend Persistence**: MockAPI
+- **Security**: flutter_dotenv (API Key Protection)
+- **Data Sources**: NewsAPI, API-Football (RapidAPI), Football-Data.org
 
 ## 🛡️ Administrative Access
 
-Access the **Admin Dashboard** via the Sidebar Drawer after logging in with administrative credentials. From there, you can manage the app's real-time content.
+- **Access**: Select "Admin" role on the login screen or click the Admin Dashboard in the Drawer.
+- **Security Note**: This version uses a simplified role-based simulation. Ensure `.env` is never committed to version control.
 
 ---
 
